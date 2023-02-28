@@ -39,16 +39,17 @@ func absMax(x: seq[int]): int =
     if absVal(x[i]) > absVal(result):
       result = x[i]
 
-proc absMaxSort(x: var seq[int]): int =
-  #[Returns the largest in absolute value signed element in a sequence.
-  ]#
+func absMaxSort(x: seq[int]): int =
+  ## Returns the signed element whose absolute value is the largest in a sequence.
   runnableExamples:
     doAssert absMaxSort(@[-1, 2, -3]) == -3
     doAssert absMaxSort(@[0, 5, 1, 11]) == 11
     doAssert absMaxSort(@[3, -10, -2]) == -10
+  var x: seq[int] = x
   if x.len == 0:
     raise newException(ValueError, "Cannot find absolute maximum of an empty sequence")
-  result = sort(x, cmp = proc (a, b: int): int = absVal(a) - absVal(b))[0]
+  sort(x, proc (a, b: int): int = absVal(a) - absVal(b))
+  return x[0]
 
 proc testAbsVal() =
   doAssert absVal(-5.1) == 5.1
@@ -56,7 +57,7 @@ proc testAbsVal() =
   doAssert absVal(0) == 0
 
 if isMainModule:
-  var x = @[1, -2, 3, -4, 5, -6]
-  absMaxSort(x)
+  var x = @[3, -2, 1, -4, 5, -6]
+  echo absMaxSort(x)
   echo x
   testAbsVal()
